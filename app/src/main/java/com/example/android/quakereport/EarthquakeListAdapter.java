@@ -18,6 +18,7 @@ import java.util.Date;
  */
 
 public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
+    private static final String LOCATION_SEPARATOR = " of ";
 
     public EarthquakeListAdapter(@NonNull Context context, ArrayList<Earthquake> earthquakes) {
         super(context, 0, earthquakes);
@@ -38,18 +39,33 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
         // Find view from list_item layout
         TextView magnitude = (TextView) convertView.findViewById(R.id.magnitude);
         TextView location = (TextView) convertView.findViewById(R.id.location);
+        TextView locationOffset = (TextView) convertView.findViewById(R.id.location_offset);
         TextView date = (TextView) convertView.findViewById(R.id.date);
         TextView time = (TextView) convertView.findViewById(R.id.time);
 
         if (currentEarthquake != null) {
             magnitude.setText(currentEarthquake.getMagnitude().toString());
-            location.setText(currentEarthquake.getLocation());
+
+            // Parse the location and pass it to the different views
+            String rawLocation = currentEarthquake.getLocation();
+            if (rawLocation.contains(",")) {
+
+                String[] separateLocationStrings = rawLocation.split(LOCATION_SEPARATOR);
+                locationOffset.setText(separateLocationStrings[0]);
+                location.setText(separateLocationStrings[1].trim());
+
+            } else {
+                locationOffset.setText(getContext().getString(R.string.near_the) + rawLocation);
+            }
 
 
+            // Parse the date and time and pass them to relevant views
             Date dateObject = new Date(currentEarthquake.getTimeInMili());
+
             String formatedDate = formatDate(dateObject);
-            date.setText(formatedDate);
             String formatedTime = formatTime(dateObject);
+
+            date.setText(formatedDate);
             time.setText(formatedTime);
         }
 

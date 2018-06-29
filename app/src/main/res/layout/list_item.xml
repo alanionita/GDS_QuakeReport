@@ -11,11 +11,19 @@
         android:layout_height="wrap_content"
         android:padding="16dp"/>
     <TextView
+        android:id="@+id/location_offset"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="16dp"/>
+
+    <TextView
         android:id="@+id/location"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:padding="16dp"/>
+
     <TextView
         android:id="@+id/date"
         android:layout_width="0dp"
