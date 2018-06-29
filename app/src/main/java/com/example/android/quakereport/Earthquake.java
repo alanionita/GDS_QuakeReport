@@ -11,12 +11,12 @@ import java.util.Date;
 public class Earthquake {
     private Double eMagnitude;
     private String eLocation;
-    private String eDate;
+    private long eTimeInMili;
 
-    Earthquake(Double magnitude, String location, String date) {
+    Earthquake(Double magnitude, String location, long timeInMili) {
         eMagnitude = magnitude;
         eLocation = location;
-        eDate = date;
+        eTimeInMili = timeInMili;
     }
 
     public Double getMagnitude () {
@@ -27,7 +27,7 @@ public class Earthquake {
         return eLocation;
     }
 
-    public String getDate () {
-        return eDate;
+    public long getTimeInMili() {
+        return eTimeInMili;
     }
 }
