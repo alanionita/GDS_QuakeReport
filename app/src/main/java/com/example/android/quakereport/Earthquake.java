@@ -12,22 +12,28 @@ public class Earthquake {
     private Double eMagnitude;
     private String eLocation;
     private long eTimeInMili;
+    private String eUrl;
 
-    Earthquake(Double magnitude, String location, long timeInMili) {
+    Earthquake(Double magnitude, String location, long timeInMili, String url) {
         eMagnitude = magnitude;
         eLocation = location;
         eTimeInMili = timeInMili;
+        eUrl = url;
     }
 
-    public Double getMagnitude () {
+    public Double getMagnitude() {
         return eMagnitude;
     }
 
-    public String getLocation () {
+    public String getLocation() {
         return eLocation;
     }
 
     public long getTimeInMili() {
         return eTimeInMili;
+    }
+
+    public String getUrl() {
+        return eUrl;
     }
 }
