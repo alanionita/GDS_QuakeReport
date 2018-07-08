@@ -20,6 +20,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -36,6 +37,7 @@ public class EarthquakeActivity
     private EarthquakeListAdapter earthquakeListAdapter;
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private TextView emptyTextView;
+    private ProgressBar progressBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,9 @@ public class EarthquakeActivity
         // Set the empty TextView
         emptyTextView = (TextView) findViewById(R.id.empty_textView);
         earthquakeListView.setEmptyView(emptyTextView);
+
+        // Find ProgressBar
+        progressBar = (ProgressBar) findViewById(R.id.indeterminateBar);
 
         // Create a new {@link ArrayAdapter} of earthquakes
         earthquakeListAdapter = new EarthquakeListAdapter(this, new ArrayList<Earthquake>());
@@ -69,7 +74,8 @@ public class EarthquakeActivity
     @Override
     public void onLoadFinished(Loader<ArrayList<Earthquake>> loader,
                                ArrayList<Earthquake> earthquakes) {
-        emptyTextView.setText("No earthquakes found!");
+        emptyTextView.setText(R.string.no_earthquakes_found);
+        progressBar.setVisibility(ProgressBar.GONE);
 
         earthquakeListAdapter.clear();
 
