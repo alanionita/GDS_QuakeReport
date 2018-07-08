@@ -16,7 +16,10 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
@@ -38,6 +41,7 @@ public class EarthquakeActivity
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private TextView emptyTextView;
     private ProgressBar progressBar;
+    boolean isConnected;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,14 @@ public class EarthquakeActivity
         // Find ProgressBar
         progressBar = (ProgressBar) findViewById(R.id.indeterminateBar);
 
+        // Checks for internet connectivity
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
         // Create a new {@link ArrayAdapter} of earthquakes
         earthquakeListAdapter = new EarthquakeListAdapter(this, new ArrayList<Earthquake>());
 
@@ -63,7 +75,12 @@ public class EarthquakeActivity
 
         // Start LoaderManager and initialise loader
         LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        if (isConnected) {
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        } else {
+            progressBar.setVisibility(ProgressBar.GONE);
+            emptyTextView.setText(R.string.no_internet_conn_found);
+        }
     }
 
     @Override
@@ -75,6 +92,7 @@ public class EarthquakeActivity
     public void onLoadFinished(Loader<ArrayList<Earthquake>> loader,
                                ArrayList<Earthquake> earthquakes) {
         emptyTextView.setText(R.string.no_earthquakes_found);
+
         progressBar.setVisibility(ProgressBar.GONE);
 
         earthquakeListAdapter.clear();
